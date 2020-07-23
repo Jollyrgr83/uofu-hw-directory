@@ -43,4 +43,4 @@ There are currently no tests for this app.
 
 ## **Deployed Application**
 
-[Deployed Application](https://fast-beyond-22655.herokuapp.com/)
+[Deployed Application](https://jollyrgr83.github.io/emp-dir/)

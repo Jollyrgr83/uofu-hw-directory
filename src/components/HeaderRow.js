@@ -5,8 +5,8 @@ import { Col } from "./Grid";
 function HeaderRow({ handleSort }) {
   return (
     <div className="row mx-auto header-row">
-      <Col size="md-2">
-        <p>Image</p>
+      <Col size="md-1">
+        <p id="thumbnail" className="header-item" onClick={handleSort}>Image</p>
       </Col>
       <Col size="md-2">
         <p id="first" className="header-item" onClick={handleSort}>Name</p>

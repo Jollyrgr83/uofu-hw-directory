@@ -20,6 +20,10 @@
   color: navy;
 }
 
+.header-item {
+  font-size: 28px;
+}
+
 .header-item:hover {
   cursor: pointer;
 }
@@ -72,4 +76,8 @@ button:focus, button:hover {
 
 .result {
   margin: 15px 0 15px 0 !important;
+}
+
+p {
+  font-size: 18px;
 }

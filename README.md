@@ -21,7 +21,9 @@ As a busy software developer who wants to quickly find employee contact informat
 
 ## **Usage**
 
-* View all employees and their associated data or enter an applicable search term to narrow the results.
+* View all employees and their associated data
+* Enter a string of characters or numbers to narrow the results
+* Click on the headers to sort by that parameter
 
 ## **License**
 

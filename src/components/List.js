@@ -1,25 +1,16 @@
 import React, { Component } from "react";
 
-import { Col, Row, Cont } from "./Grid";
+import { Cont } from "./Grid";
 import Title from "./Title";
 import Search from "./Search";
 import HeaderRow from "./HeaderRow";
+import Result from "./Result";
 import API from "../utils/API";
 
 class List extends Component {
   state = {
     search: "",
-    renderResults: [
-      {
-        id: "",
-        email: "",
-        phone: "",
-        cell: "",
-        picture: { thumbnail: "" },
-        name: { first: "", last: "" },
-        location: { city: "", state: "" },
-      },
-    ]
+    renderResults: [{ id: "" }],
   };
 
   componentDidMount() {
@@ -44,7 +35,7 @@ class List extends Component {
           });
           this.setState({
             results: [...cleanedResults],
-            renderResults: [...cleanedResults]
+            renderResults: [...cleanedResults],
           });
         })
         .catch((err) => console.log(err));
@@ -69,8 +60,8 @@ class List extends Component {
   handleReset = () => {
     this.setState({
       renderResults: [...this.state.results],
-      search: ""
-    })
+      search: "",
+    });
   };
 
   searchUsers = (query) => {
@@ -85,9 +76,9 @@ class List extends Component {
       );
     });
     this.setState({ renderResults: [...filteredArray], search: "" });
-  }; 
+  };
 
-  handleSort = event => {
+  handleSort = (event) => {
     const param = event.target.id;
     let sortedArray = [...this.state.renderResults];
     sortedArray.sort((a, b) => {
@@ -96,9 +87,9 @@ class List extends Component {
       } else {
         return -1;
       }
-    })
+    });
     this.setState({
-      renderResults: [...sortedArray]
+      renderResults: [...sortedArray],
     });
   };
 
@@ -114,27 +105,16 @@ class List extends Component {
         />
         <HeaderRow handleSort={this.handleSort} />
         {this.state.renderResults.map((x) => (
-          <Row key={x.id}>
-            <Col size="md-2">
-              <img src={x.thumbnail} alt={`${x.first} ${x.last}`} />
-            </Col>
-            <Col size="md-2">
-              <p>
-                {x.first} {x.last}
-              </p>
-            </Col>
-            <Col size="md-3">
-              <p>{x.email}</p>
-            </Col>
-            <Col size="md-2">
-              <p>{x.phone}</p>
-            </Col>
-            <Col size="md-2">
-              <p>
-                {x.city}, {x.state}
-              </p>
-            </Col>
-          </Row>
+          <Result
+            id={x.id}
+            thumbnail={x.thumbnail}
+            first={x.first}
+            last={x.last}
+            email={x.email}
+            phone={x.phone}
+            city={x.city}
+            state={x.state}
+          />
         ))}
       </Cont>
     );

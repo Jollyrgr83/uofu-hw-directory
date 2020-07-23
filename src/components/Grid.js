@@ -13,7 +13,7 @@ export function Col({ size, children }) {
     <div
       className={size
         .split(" ")
-        .map(size => "col-" + size + " mx-auto")
+        .map(size => "col-" + size + " mx-auto text-center")
         .join(" ")}
     >
       {children}

@@ -5,7 +5,7 @@ export function Cont({ fluid, children }) {
 }
 
 export function Row({ fluid, children }) {
-  return <div className={`row${fluid ? "-fluid" : ""}`}>{children}</div>;
+  return <div className={`row${fluid ? "-fluid" : ""} result mx-auto`}>{children}</div>;
 }
 
 export function Col({ size, children }) {
@@ -13,7 +13,7 @@ export function Col({ size, children }) {
     <div
       className={size
         .split(" ")
-        .map(size => "col-" + size)
+        .map(size => "col-" + size + " mx-auto")
         .join(" ")}
     >
       {children}

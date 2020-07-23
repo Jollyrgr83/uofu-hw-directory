@@ -1,12 +1,25 @@
 import React, { Component } from "react";
 
 import { Col, Row, Cont } from "./Grid";
+import Title from "./Title";
+import Search from "./Search";
+import HeaderRow from "./HeaderRow";
 import API from "../utils/API";
 
 class List extends Component {
   state = {
-    result: {},
-    search: ""
+    search: "",
+    renderResults: [
+      {
+        id: "",
+        email: "",
+        phone: "",
+        cell: "",
+        picture: { thumbnail: "" },
+        name: { first: "", last: "" },
+        location: { city: "", state: "" },
+      },
+    ]
   };
 
   componentDidMount() {
@@ -14,45 +27,115 @@ class List extends Component {
   }
 
   loadUsers = () => {
-    API.search()
-      .then(res => this.setState({ result: res.results }))
-      .catch(err => console.log(err));
+    if (this.state.renderResults[0].id === "") {
+      API.search()
+        .then((res) => {
+          let cleanedResults = res.data.results.map((x) => {
+            return {
+              id: x.id.value,
+              first: x.name.first,
+              last: x.name.last,
+              city: x.location.city,
+              state: x.location.state,
+              phone: x.phone,
+              email: x.email,
+              thumbnail: x.picture.thumbnail,
+            };
+          });
+          this.setState({
+            results: [...cleanedResults],
+            renderResults: [...cleanedResults]
+          });
+        })
+        .catch((err) => console.log(err));
+    } else {
+      return;
+    }
   };
 
-  handleInputChange = event => {
+  handleInputChange = (event) => {
     const value = event.target.value;
     const name = event.target.name;
     this.setState({
-      [name]: value
+      [name]: value,
     });
   };
 
-  handleFormSubmit = event => {
+  handleFormSubmit = (event) => {
     event.preventDefault();
-    this.searchMovies(this.state.search);
+    this.searchUsers(this.state.search);
+  };
+
+  handleReset = () => {
+    this.setState({
+      renderResults: [...this.state.results],
+      search: ""
+    })
+  };
+
+  searchUsers = (query) => {
+    let filteredArray = this.state.results.filter((x) => {
+      return (
+        x.first.includes(query) ||
+        x.last.includes(query) ||
+        x.city.includes(query) ||
+        x.state.includes(query) ||
+        x.phone.includes(query) ||
+        x.email.includes(query)
+      );
+    });
+    this.setState({ renderResults: [...filteredArray], search: "" });
+  }; 
+
+  handleSort = event => {
+    const param = event.target.id;
+    let sortedArray = [...this.state.renderResults];
+    sortedArray.sort((a, b) => {
+      if (a[param] > b[param]) {
+        return 1;
+      } else {
+        return -1;
+      }
+    })
+    this.setState({
+      renderResults: [...sortedArray]
+    });
   };
 
   render() {
     return (
       <Cont fluid>
-        <Row>
-          <Col size="md-3">
-            <img src={this.state.result.picture.thumbnail} alt={this.state.result.name.first} />
-          </Col>
-          <Col size="md-3">
-            <p>{this.state.result.name.first}</p>
-            <p>{this.state.result.name.last}</p>
-          </Col>
-          <Col size="md-3">
-            <p>{this.state.result.email}</p>
-            <p>{this.state.result.phone}</p>
-            <p>{this.state.result.cell}</p>
-          </Col>
-          <Col size="md-3">
-            <p>{this.state.result.location.city}</p>
-            <p>{this.state.result.location.state}</p>
-          </Col>
-        </Row>
+        <Title />
+        <Search
+          handleInputChange={this.handleInputChange}
+          handleFormSubmit={this.handleFormSubmit}
+          handleReset={this.handleReset}
+          value={this.state.search}
+        />
+        <HeaderRow handleSort={this.handleSort} />
+        {this.state.renderResults.map((x) => (
+          <Row key={x.id}>
+            <Col size="md-2">
+              <img src={x.thumbnail} alt={`${x.first} ${x.last}`} />
+            </Col>
+            <Col size="md-2">
+              <p>
+                {x.first} {x.last}
+              </p>
+            </Col>
+            <Col size="md-3">
+              <p>{x.email}</p>
+            </Col>
+            <Col size="md-2">
+              <p>{x.phone}</p>
+            </Col>
+            <Col size="md-2">
+              <p>
+                {x.city}, {x.state}
+              </p>
+            </Col>
+          </Row>
+        ))}
       </Cont>
     );
   }

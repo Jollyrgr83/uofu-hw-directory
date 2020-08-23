@@ -43,4 +43,4 @@ There are currently no tests for this app.
 
 ## **Deployed Application**
 
-[Deployed Application](https://jollyrgr83.github.io/emp-dir/)
+[Deployed Application](https://jollyrgr83.github.io/uofu-hw-directory/)
